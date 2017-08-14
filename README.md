@@ -50,10 +50,12 @@ the arduino to simulate a button press. The original resistors then do their job
 The first step is to try to emulate the control board using an arduino. There are
 two possibilities:
 
- - Use an analog pin on an arduino to output the desired voltage. An arduino can
-   only handle a small current on an analog output pin. Depending on the current
-   drawn by the camera, this may be issufficient. Also, the analog output is PWM,
-   which may or may not work.
+## Analog pin
+
+Use an analog pin on an arduino to output the desired voltage. An arduino can
+only handle a small current on an analog output pin. Depending on the current
+drawn by the camera, this may be issufficient. Also, the analog output is PWM,
+which may or may not work.
 
 ```
               +------+
@@ -65,8 +67,10 @@ two possibilities:
   [GND]-----+------------+
 ```
 
- - Use a resistor network with transistors or shift register that can utilize
-   digital pins to emulate button presses.
+## Digital pins / UART
+
+Use a resistor network with transistors or shift register that can utilize
+digital pins to emulate button presses.
 
 http://www.toptechboy.com/arduino/lesson-8-writing-analog-voltages-in-arduino/
 
