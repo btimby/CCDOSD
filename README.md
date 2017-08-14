@@ -17,7 +17,7 @@ expect.
 The OSD control boards have five buttons. There are a number of resistors on the
 board.
 
-![OSD Control Board](/mages/s-l1600.jpg)
+![OSD Control Board](images/s-l1600.jpg)
 
 I was able to find a DIY version of these boards...
 
