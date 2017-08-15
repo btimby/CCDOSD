@@ -6,7 +6,7 @@ My end goal is to allow a single wire connection from an STM32 based multicopter
 flight controller and a CCD camera, allowing the flight controller to pass "button
 presses" to the camera.
 
-This will allow in-field adjustment of camera setting using one's RC transmitter
+This will allow in-field adjustment of camera settings using one's RC transmitter
 and FPV goggles.
 
 First, I need to figure out the "protocol" or electrical interface these cameras
@@ -18,6 +18,10 @@ The OSD control boards have five buttons. There are a number of resistors on the
 board.
 
 ![OSD Control Board](images/s-l1600.jpg)
+![OSD Control Board Closeup](images/cam1-closeup.jpg)
+![OSD Control Board Rear](images/cam1-rear.jpg)
+
+In the last, you can read the resistor values and other details.
 
 I was able to find a DIY version of these boards...
 
@@ -67,6 +71,10 @@ which may or may not work.
   [GND]-----+------------+
 ```
 
+If I am lucky, this will work, and the interface will be super simple. All that
+will be required is a single analog output pin. If not, more circuitry will be
+required to allow generating the proper signal.
+
 ## Digital pins / UART
 
 Use a resistor network with transistors or shift register that can utilize
@@ -74,9 +82,24 @@ digital pins to emulate button presses.
 
 http://www.toptechboy.com/arduino/lesson-8-writing-analog-voltages-in-arduino/
 
-If I am lucky, this will work, and the interface will be super simple. All that
-will be required is a single analog output pin. If not, more circuitry will be
-required to allow generating the proper signal.
+```
+           +-------------------+                     +----------+
+           |  +------+         |                +----|          |
+  [5V]-----+--| Ar   |       +---+  +---+       |    |    CAM   |
+              |  du  |--D0---| S |--| A |-[R0]--+  +-|          |
+              |   in |--D1---| h |--| r |-[R1]--+  | +----------+
+            +-|    o |--D2---| i |--| r |-[R2]--+  |
+            | +------+       | f |--| a |-[R3]--+  |
+            |                | t |--| y |-------+  |
+            |                +---+  +---+          |
+            |                  |      |            |
+  [GND]-----+------------------+------+------------+
+```
+
+To switch 5 different outputs, one must use a shift register in combination with
+a transistor array and some resistors. The above diagram depicts this arrangement.
+Below is a simplified diagram omitting the transistors. This would sink current
+directly through the shift register, thus the part would require this ability.
 
 ```
            +-------------------+               +----------+
@@ -86,15 +109,13 @@ required to allow generating the proper signal.
               |   in |--D1---| h |--[R1]--+  | +----------+
             +-|    o |--D2---| i |--[R2]--+  |
             | +------+       | f |--[R3]--+  |
-  [GND]-----+--------------+ | t |--------+  |
-                           | +---+           |
-                           |   |             |
-                           +---+-------------+
+            |                | t |--------+  |
+            |                +---+           |
+            |                  |             |
+  [GND]-----+------------------+-------------+
 ```
 
-To switch 5 different outputs, one must use a shift register in combination with
-a transistor array and some resistors. Here is more information on using shift
-registers.
+Here is more information on using shift registers.
 
 https://www.arduino.cc/en/Tutorial/ShiftOut
 https://labalec.fr/erwan/?p=1288
